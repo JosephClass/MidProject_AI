@@ -28,15 +28,30 @@ target_word = "PresUniv"
 disp (" ")
 
 # How much population (randomize gen) will produce
-population_number = 7;
+population_number = 10;
+mutation_rate = 0.5;
 
 # Function create_population is located in create_population.m file.
 population = create_population(target_word,population_number);
 
 # Function to print all generated population with its fitness
 # (This function is not from the tutorial)
-for i=1:population_number,
-gen = population(i).gen
-fit = population(i).fitness
-disp (" ")
-endfor
+#for i=1:population_number,
+#gen = population(i).gen
+#fit = population(i).fitness
+#disp (" ")
+#endfor
+
+#Best Individual
+[parent1, parent2] = selection(population)
+
+#Crossover
+[child1,child2] = crossover(parent1,parent2)
+
+#Mutation
+mutant1 = mutation(child1,mutation_rate)
+mutant2 = mutation(child2,mutation_rate)
+
+mutant1.fitness = fitness_test(mutant1.gen,target_word)
+mutant2.fitness = fitness_test(mutant2.gen,target_word)
+

@@ -1,4 +1,4 @@
-function (child1, child2] = crossover(parent1, parent2)
+function [child1, child2] = crossover(parent1, parent2)
    childl = parent1;
    child2 = parent2;
     % crossover point
