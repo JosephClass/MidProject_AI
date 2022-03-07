@@ -22,7 +22,7 @@ clc
 
 # target_word will be the input from user as the word that Genetic Algorithm will
 # work to match it as fit as the algortihm can.
-target_word = "PresUniv"
+target_word = "Pres"
 
 # disp() function is like print() in python
 disp (" ")
@@ -33,7 +33,7 @@ mutation_rate = 0.5;
 
 # Function create_population is located in create_population.m file.
 population = create_population(target_word,population_number);
-
+isLooping = true;
 # Function to print all generated population with its fitness
 # (This function is not from the tutorial)
 #for i=1:population_number,
@@ -41,39 +41,24 @@ population = create_population(target_word,population_number);
 #fit = population(i).fitness
 #disp (" ")
 #endfor
+while isLooping
+  #Best Individual
+  [parent1, parent2] = selection(population);
 
-#Best Individual
-[parent1, parent2] = selection(population);
+  #Crossover
+  [child1,child2] = crossover(parent1,parent2);
 
-#Crossover
-[child1,child2] = crossover(parent1,parent2);
+  #Mutation
+  mutant1 = mutation(child1,mutation_rate);
+  mutant2 = mutation(child2,mutation_rate);
 
-#Mutation
-mutant1 = mutation(child1,mutation_rate);
-mutant2 = mutation(child2,mutation_rate);
+  mutant1.fitness = fitness_test(mutant1.gen,target_word);
+  mutant2.fitness = fitness_test(mutant2.gen,target_word);
 
-mutant1.fitness = fitness_test(mutant1.gen,target_word);
-mutant2.fitness = fitness_test(mutant2.gen,target_word);
+  children = [mutant1,mutant2];
+  population = regeneration(children,population)
+  
+  [isLooping,solution] = termination(population)
+  clc
+endwhile
 
-children = [mutant1,mutant2];
-
-fitness = zeros(1,length(population));
-
-for i=1:length(fitness)
-  fitness(i) = population(i).fitness;
-endfor
-population.gen
-
-for i=1:length(children)
-  [~,index] = min(fitness);
-  population(index) = [];
-  fitness(index) = [];
-endfor
-
-for i=1:length(children)
-  n = length(population) + 1;
-  population(n) = children(i);
-endfor 
-disp(" ")
-disp("populasi akhir")
-population.gen
