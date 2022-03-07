@@ -43,15 +43,37 @@ population = create_population(target_word,population_number);
 #endfor
 
 #Best Individual
-[parent1, parent2] = selection(population)
+[parent1, parent2] = selection(population);
 
 #Crossover
-[child1,child2] = crossover(parent1,parent2)
+[child1,child2] = crossover(parent1,parent2);
 
 #Mutation
-mutant1 = mutation(child1,mutation_rate)
-mutant2 = mutation(child2,mutation_rate)
+mutant1 = mutation(child1,mutation_rate);
+mutant2 = mutation(child2,mutation_rate);
 
-mutant1.fitness = fitness_test(mutant1.gen,target_word)
-mutant2.fitness = fitness_test(mutant2.gen,target_word)
+mutant1.fitness = fitness_test(mutant1.gen,target_word);
+mutant2.fitness = fitness_test(mutant2.gen,target_word);
 
+children = [mutant1,mutant2];
+
+fitness = zeros(1,length(population));
+
+for i=1:length(fitness)
+  fitness(i) = population(i).fitness;
+endfor
+population.gen
+
+for i=1:length(children)
+  [~,index] = min(fitness);
+  population(index) = [];
+  fitness(index) = [];
+endfor
+
+for i=1:length(children)
+  n = length(population) + 1;
+  population(n) = children(i);
+endfor 
+disp(" ")
+disp("populasi akhir")
+population.gen
